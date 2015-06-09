@@ -7,29 +7,12 @@
 		<div class="map">
 			
 			<div class="box"></div>
-
+			
 		</div>
 
+		<input type="text" size="8" id="counter" />
 
-		<input type="text" size="8" id="counter" />  <!-- text box แสดงการนับถอยหลัง   -->
 
-<script>
-var time = 20;
- var seconds=time+1;// กำหนดค่าเริ่มต้น 10 วินาที
- document.getElementById("counter").value=time;//แสดงค่าเริ่มต้นใน 10 วินาที ใน text box
-
-function display(){ //function ใช้ในการ นับถอยหลัง
-
-    seconds-=1;//ลบเวลาทีละหนึ่งวินาทีทุกครั้งที่ function ทำงาน
- 
- if(seconds==-1){return;} //เมื่อหมดเวลาแล้วจะหยุดการทำงานของ function display
-
-    document.getElementById("counter").value=seconds; //แสดงเวลาที่เหลือ
-    setTimeout("display()",1000);// สั่งให้ function display() ทำงาน หลังเวลาผ่านไป 1000 milliseconds ( 1000  milliseconds = 1 วินาที )
-}
-display(); //เปิดหน้าเว็บให้ทำงาน function  display()
-
-</script>
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="jquery-collision.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="style.css">

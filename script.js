@@ -1,16 +1,27 @@
+var minLengthX = 309;
+var maxLengthX = 309+450;
+var minLengthY = 21;
+var maxLengthY = 21+450;
+var numMachine = 2;
+var time = 10;
 $(document).ready(function(){
+	settime();
 
-	var box = new MyObject(x = 0,y = 0,length = 50);
+	var box = new MyObject(x = minLengthX,y = minLengthY,length = 50);
+
 	var map = new MyMap();
 	map.CreateMap();
 
 	var Mac = new Machine();
-	Mac.CreateMac();
 	
+	
+	for(var i = 1 ;i <= numMachine ;i++){
+		Mac.CreateMac(i);
+		move(0,i);
+	}
 
 	window.setInterval(function(){
   		box.checkhit()
-
 	}, 50);
 
 
@@ -20,23 +31,26 @@ $(document).ready(function(){
 		box.moveto();
 		
 	});
-	move(0);
-
+	
+	
+	
 });
 
 function Machine(){
-	this.CreateMac = function(){
-		var div = "<div class = 'Mac'></div>";
+	this.CreateMac = function(n){
+		var Class = "Mac" + " " + n;
+		var div = "<div class = '" + Class + "'></div>";
 		$(".map").append(div);
-		var x = Math.floor((Math.random() * 450));
-		var y = Math.floor((Math.random() * 450));
-		$(".Mac").last().css("left",x+309);
-		$(".Mac").last().css("top",y+21);
+		var x = Math.floor((Math.random() * (maxLengthX-minLengthX+1))+minLengthX);
+		var y = Math.floor((Math.random() * (maxLengthY-minLengthY+1))+minLengthY);
+		 Class = ".Mac" + "." + n;
+		 
+		$(Class).css("left",x);
+		$(Class).css("top",y);
 	}
-
 }
 
-function move(s){
+function move(s,num){
 		
 		do{
 			var side =	Math.floor((Math.random() * 4)+1);	
@@ -45,29 +59,30 @@ function move(s){
 		var y;
 		switch(side){
 			case 1: // top
-			 x = Math.floor((Math.random() * 450));
-			 y = 0;
+			 x = Math.floor((Math.random() * (maxLengthX-minLengthX+1))+minLengthX);
+			 y = minLengthY;
 			 break;
 
 			 case 2: // right
-			 x = 450;
-			 y = Math.floor((Math.random() * 450));
+			 x = maxLengthX;
+			 y = Math.floor((Math.random() * (maxLengthY-minLengthY+1))+minLengthY);
 			 break;
 
 			 case 3: // bott
-			 x = Math.floor((Math.random() * 450));
-			 y = 450;
+			 x = Math.floor((Math.random() * (maxLengthX-minLengthX+1))+minLengthX);
+			 y = maxLengthY;
 			 break;
 
 			 case 4: // left
-			 x = 0;
-			 y = Math.floor((Math.random() * 450));
+			 x = minLengthX;
+			 y = Math.floor((Math.random() * (maxLengthY-minLengthY+1))+minLengthY);
 			 break;
 
 		}
-		console.log(x + " " + y);
-		$(".Mac").animate({top: y+21+"px" , left: x+309+"px"},1000,function(){
-			move(side);
+		
+		var Class = ".Mac" + "." + num;
+		$(Class).animate({top: y+"px" , left: x+"px"},1000,function(){
+			move(side,num);
 		});
 }
 
@@ -115,30 +130,30 @@ function MyObject(x,y,length){
 	
 
 	this.position = function(keypress,map){
-
-		var x = this.x/50;
-		var y = this.y/50;
+			var x = (this.x-minLengthX)/this.length;
+			var y = (this.y-minLengthY)/this.length;
+			
 		switch(keypress) {
         case 37: // left
-        if(this.x > 0 && map[y][x-1] == 0){
+        if(this.x > minLengthX && map[y][x-1] == 0){
         	this.x-=this.length;
     	}
         break;
 
         case 38: // up
-        if(this.y > 0 && map[y-1][x] == 0){
+        if(this.y > minLengthY && map[y-1][x] == 0){
         	this.y-=this.length;
     	}
         break;
 
         case 39: // right
-        if(this.x < 450 && map[y][x+1] == 0){
+        if(this.x < maxLengthX && map[y][x+1] == 0){
         	this.x+=this.length;
     	}
         break;
 
         case 40: // down
-        if(this.y < 450 && map[y+1][x] == 0){
+        if(this.y < maxLengthY && map[y+1][x] == 0){
         	this.y+=this.length;
     	}
         break;   
@@ -160,81 +175,21 @@ function MyObject(x,y,length){
 	}
 } 
 
+function settime(){
 
+	var seconds=time+1;
+	document.getElementById("counter").value=time;
 
-/*function maze(x,y) {
-    var n=x*y-1;
-    if (n<0) {alert("illegal maze dimensions");return;}
-    var horiz=[]; for (var j= 0; j<x+1; j++) horiz[j]= [];
-    var verti=[]; for (var j= 0; j<y+1; j++) verti[j]= [];
-    var here= [Math.floor(Math.random()*x), Math.floor(Math.random()*y)];
-    var path= [here];
-    var unvisited= [];
-    for (var j= 0; j<x+2; j++) {
-        unvisited[j]= [];
-        for (var k= 0; k<y+1; k++)
-            unvisited[j].push(j>0 && j<x+1 && k>0 && (j != here[0]+1 || k != here[1]+1));
-    }
-    while (0<n) {
-        var potential= [[here[0]+1, here[1]], [here[0],here[1]+1],
-            [here[0]-1, here[1]], [here[0],here[1]-1]];
-        var neighbors= [];
-        for (var j= 0; j < 4; j++)
-            if (unvisited[potential[j][0]+1][potential[j][1]+1])
-                neighbors.push(potential[j]);
-        if (neighbors.length) {
-            n= n-1;
-            next= neighbors[Math.floor(Math.random()*neighbors.length)];
-            unvisited[next[0]+1][next[1]+1]= false;
-            if (next[0] == here[0])
-                horiz[next[0]][(next[1]+here[1]-1)/2]= true;
-            else 
-                verti[(next[0]+here[0]-1)/2][next[1]]= true;
-            path.push(here= next);
-        } else 
-            here= path.pop();
-    }
-    return ({x: x, y: y, horiz: horiz, verti: verti});
+	display(time,seconds);
 }
+function display(time,seconds){
 
-function display(m) {
-    var text= [];
-    for (var j= 0; j<m.x*2+1; j++) {
-        var line= [];
-        if (0 == j%2)
-            for (var k=0; k<m.y*4+1; k++)
-                if (0 == k%4) 
-                    line[k]= '+';
-                else
-                    if (j>0 && m.verti[j/2-1][Math.floor(k/4)])
-                        line[k]= ' ';
-                    else
-                        line[k]= '-';
-        else
-            for (var k=0; k<m.y*4+1; k++)
-                if (0 == k%4)
-                    if (k>0 && m.horiz[(j-1)/2][k/4-1])
-                        line[k]= ' ';
-                    else
-                        line[k]= '|';
-                else
-                    line[k]= ' ';
-        if (0 == j) line[1]= line[2]= line[3]= ' ';
-        if (m.x*2-1 == j) line[4*m.y]= ' ';
-        text.push(line.join('')+'\r\n');
-    }
-    return text.join('');
-}*/
-
-
-
-
-
-
-
-
-
-
-
-
-
+    seconds-=1;
+ 	
+ 	document.getElementById("counter").value=seconds;
+ 	if(seconds==0){alert("You WIN!!!");
+ 		location.reload();
+ 	} 
+    
+    setTimeout("display("+time+","+seconds+")",1000);
+}
