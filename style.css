@@ -39,3 +39,8 @@
 				
     			100% {transform:rotate(360deg);}
 				}
+
+.time{
+	position: absolute;
+	font-size: 150px;
+}

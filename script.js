@@ -14,14 +14,26 @@ $(document).ready(function(){
 
 	createMachine(numMachine);
 	
-	/*window.setInterval(function(){
+	window.setInterval(function(){
   		box.checkhit()
-	}, 30);*/
+	}, 1);
 
-	$(document).keydown(function(e) {
+	/*$(document).keydown(function(e) {
 			box.position(e.which,map.map);
 			box.moveto();
-		});
+		});*/
+	$(".box").hover(function(){
+		$(document).mousemove(function(e){
+		console.log(e.pageY +  " " + e.pageX);
+		if(e.pageY < maxLengthY && e.pageY > minLengthY){
+			$(".box").css({'top': e.pageY});
+		}
+		if(e.pageX < maxLengthX && e.pageX > minLengthX){
+			$(".box").css({'left': e.pageX});
+		}
+      
+  	});
+	});
 	
 	
 });
@@ -35,7 +47,7 @@ function createMachine(num){
 		move(0,i);
 	}
     settime();
-	}, 2000);
+	}, 3000);
 
 
 }
@@ -44,6 +56,8 @@ function MyObject(x,y,length){
 	this.x = x;
 	this.y = y;
 	this.length = length;
+	var div = '<div class="box"></div>';
+	$(".map").append(div);
 	$(".box").css("left",x+"px");
 	$(".box").css("top",y+"px");
 	
@@ -142,7 +156,7 @@ function move(s,num){
 		var t = Math.floor((Math.random() * 4));
 		console.log(tt[t]);
 			setTimeout(function(){
-			$(Class).animate({top: y+"px" , left: x+"px"},1200,function(){
+			$(Class).animate({top: y+"px" , left: x+"px"},1000,function(){
 			move(side,num);
 		});
 		},tt[t]);
