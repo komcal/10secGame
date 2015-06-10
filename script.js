@@ -7,7 +7,7 @@ var time = 10;
 $(document).ready(function(){
 	settime();
 
-	var box = new MyObject(x = minLengthX,y = minLengthY,length = 50);
+	var box = new MyObject(x = minLengthX+200,y = minLengthY+200,length = 50);
 
 	var map = new MyMap();
 	map.CreateMap();
