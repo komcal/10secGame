@@ -2,43 +2,43 @@ var minLengthX = 309;
 var maxLengthX = 309+500;
 var minLengthY = 21;
 var maxLengthY = 21+500;
-var numMachine = 5;
+var numMachine = 1;
 var time = 10;
-
-
-
-
+var tt = [0,300,500,1000];
 $(document).ready(function(){
 	
-
 	var box = new MyObject(x = minLengthX+200,y = minLengthY+200,length = 25);
 
 	var map = new MyMap();
 	map.CreateMap();
 
-	var Mac = new Machine();
+	createMachine(numMachine);
 	
-	for(var i = 1 ;i <= numMachine ;i++){
-		Mac.CreateMac(i);
-	}
-	
-	window.setInterval(function(){
+	/*window.setInterval(function(){
   		box.checkhit()
-	}, 10);
+	}, 30);*/
 
-	
-	setTimeout(function(){
-    	for(var i = 1 ;i <= numMachine ;i++){
-			move(0,i);
-		}
-		$(document).keydown(function(e) {
+	$(document).keydown(function(e) {
 			box.position(e.which,map.map);
 			box.moveto();
 		});
-		settime();
-	}, 2000);
+	
 	
 });
+
+function createMachine(num){
+	var Mac = new Machine();
+	
+	setTimeout(function(){
+    for(var i = 1 ;i <= num ;i++){
+		Mac.CreateMac(i);
+		move(0,i);
+	}
+    settime();
+	}, 2000);
+
+
+}
 
 function MyObject(x,y,length){
 	this.x = x;
@@ -88,7 +88,7 @@ function MyObject(x,y,length){
 		var hit_list = $(".box").collision(".Mac");
 		
 		if(hit_list.length){
-			console.log(hit_list.length);
+			alert("YOU LOSE!!!");
 			location.reload();
 		}
 	}
@@ -138,11 +138,16 @@ function move(s,num){
 			 break;
 
 		}
-		
 		var Class = ".Mac" + "." + num;
-		$(Class).animate({top: y+"px" , left: x+"px"},1200,function(){
+		var t = Math.floor((Math.random() * 4));
+		console.log(tt[t]);
+			setTimeout(function(){
+			$(Class).animate({top: y+"px" , left: x+"px"},1200,function(){
 			move(side,num);
 		});
+		},tt[t]);
+		
+		
 }
 
 
@@ -191,8 +196,12 @@ function display(time,seconds){
     seconds-=1;
  	
  	document.getElementById("counter").value=seconds;
- 	if(seconds==0){alert("You WIN!!!");
- 		location.reload();
+ 	if(seconds==0){
+ 		$(".Mac").remove();
+ 		numMachine++;
+ 		alert("STAGE " + numMachine);
+ 		createMachine(numMachine);
+ 		return;
  	} 
     
     setTimeout("display("+time+","+seconds+")",1000);
