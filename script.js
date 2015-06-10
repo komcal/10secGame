@@ -1,40 +1,99 @@
 var minLengthX = 309;
-var maxLengthX = 309+450;
+var maxLengthX = 309+500;
 var minLengthY = 21;
-var maxLengthY = 21+450;
-var numMachine = 2;
+var maxLengthY = 21+500;
+var numMachine = 5;
 var time = 10;
-$(document).ready(function(){
-	settime();
 
-	var box = new MyObject(x = minLengthX+200,y = minLengthY+200,length = 50);
+
+
+
+$(document).ready(function(){
+	
+
+	var box = new MyObject(x = minLengthX+200,y = minLengthY+200,length = 25);
 
 	var map = new MyMap();
 	map.CreateMap();
 
 	var Mac = new Machine();
 	
-	
 	for(var i = 1 ;i <= numMachine ;i++){
 		Mac.CreateMac(i);
-		move(0,i);
 	}
-
+	
 	window.setInterval(function(){
   		box.checkhit()
-	}, 50);
+	}, 10);
 
-
-
-	$(document).keydown(function(e) {
-		box.position(e.which,map.map);
-		box.moveto();
-		
-	});
 	
-	
+	setTimeout(function(){
+    	for(var i = 1 ;i <= numMachine ;i++){
+			move(0,i);
+		}
+		$(document).keydown(function(e) {
+			box.position(e.which,map.map);
+			box.moveto();
+		});
+		settime();
+	}, 2000);
 	
 });
+
+function MyObject(x,y,length){
+	this.x = x;
+	this.y = y;
+	this.length = length;
+	$(".box").css("left",x+"px");
+	$(".box").css("top",y+"px");
+	
+
+	this.position = function(keypress,map){
+			var x = (this.x-minLengthX)/this.length;
+			var y = (this.y-minLengthY)/this.length;
+			
+		switch(keypress) {
+        case 37: // left
+        if(this.x > minLengthX){
+        	this.x-=this.length;
+    	}
+        break;
+
+        case 38: // up
+        if(this.y > minLengthY){
+        	this.y-=this.length;
+    	}
+        break;
+
+        case 39: // right
+        if(this.x < maxLengthX){
+        	this.x+=this.length;
+    	}
+        break;
+
+        case 40: // down
+        if(this.y < maxLengthY){
+        	this.y+=this.length;
+    	}
+        break;   
+    	}	
+	};
+	this.moveto = function(map){
+		$(".box").animate({top: this.y+"px" , left: this.x+"px"},10,function(){
+			
+		});	
+		
+	}
+	this.checkhit = function(){
+		var hit_list = $(".box").collision(".Mac");
+		
+		if(hit_list.length){
+			console.log(hit_list.length);
+			location.reload();
+		}
+	}
+} 
+
 
 function Machine(){
 	this.CreateMac = function(n){
@@ -81,7 +140,7 @@ function move(s,num){
 		}
 		
 		var Class = ".Mac" + "." + num;
-		$(Class).animate({top: y+"px" , left: x+"px"},1000,function(){
+		$(Class).animate({top: y+"px" , left: x+"px"},1200,function(){
 			move(side,num);
 		});
 }
@@ -119,61 +178,6 @@ function MyMap(){
 	}
 }
 
-
-
-function MyObject(x,y,length){
-	this.x = x;
-	this.y = y;
-	this.length = length;
-	$(".box").css("left",x+"px");
-	$(".box").css("top",y+"px");
-	
-
-	this.position = function(keypress,map){
-			var x = (this.x-minLengthX)/this.length;
-			var y = (this.y-minLengthY)/this.length;
-			
-		switch(keypress) {
-        case 37: // left
-        if(this.x > minLengthX && map[y][x-1] == 0){
-        	this.x-=this.length;
-    	}
-        break;
-
-        case 38: // up
-        if(this.y > minLengthY && map[y-1][x] == 0){
-        	this.y-=this.length;
-    	}
-        break;
-
-        case 39: // right
-        if(this.x < maxLengthX && map[y][x+1] == 0){
-        	this.x+=this.length;
-    	}
-        break;
-
-        case 40: // down
-        if(this.y < maxLengthY && map[y+1][x] == 0){
-        	this.y+=this.length;
-    	}
-        break;   
-    	}	
-	};
-	this.moveto = function(map){
-		$(".box").animate({top: this.y+"px" , left: this.x+"px"},10,function(){
-			
-		});	
-		
-	}
-	this.checkhit = function(){
-		var hit_list = $(".box").collision(".Mac");
-		
-		if(hit_list.length){
-			console.log(hit_list.length);
-			location.reload();
-		}
-	}
-} 
 
 function settime(){
 
