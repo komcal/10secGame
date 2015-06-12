@@ -4,7 +4,7 @@ var minLengthY = 21;
 var maxLengthY = 21+500;
 var numMachine = 1;
 var time = 10;
-var tt = [0,300,500,1000];
+var tt = [0,200,500,800];
 $(document).ready(function(){
 	
 	var box = new MyObject(x = minLengthX+200,y = minLengthY+200,length = 25);
@@ -12,7 +12,7 @@ $(document).ready(function(){
 	var map = new MyMap();
 	map.CreateMap();
 
-	createMachine(numMachine);
+	
 	
 	window.setInterval(function(){
   		box.checkhit()
@@ -22,8 +22,14 @@ $(document).ready(function(){
 			box.position(e.which,map.map);
 			box.moveto();
 		});*/
+	var e = 0;
+	
 	$(".box").hover(function(){
-		$(document).mousemove(function(e){
+		if(e == 0){
+			createMachine(numMachine);
+			e++;
+		}
+		$(".map").mousemove(function(e){
 		console.log(e.pageY +  " " + e.pageX);
 		if(e.pageY < maxLengthY && e.pageY > minLengthY){
 			$(".box").css({'top': e.pageY});
@@ -37,6 +43,7 @@ $(document).ready(function(){
 	
 	
 });
+
 
 function createMachine(num){
 	var Mac = new Machine();
@@ -213,6 +220,7 @@ function display(time,seconds){
  	if(seconds==0){
  		$(".Mac").remove();
  		numMachine++;
+ 		$(".map").off();
  		alert("STAGE " + numMachine);
  		createMachine(numMachine);
  		return;
