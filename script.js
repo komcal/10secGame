@@ -5,13 +5,15 @@ var maxLengthY = 21+500;
 var numMachine = 1;
 var time = 10;
 var tt = [0,200,500,800];
+
+	var box = new MyObject(x = minLengthX+200,y = minLengthY+200,length = 25);
+	var Mac = new Machine();
+	var map = new MyMap();
+
 $(document).ready(function(){
 	
-	var box = new MyObject(x = minLengthX+200,y = minLengthY+200,length = 25);
-
-	var map = new MyMap();
 	map.CreateMap();
-
+	Mac.check = 0;
 	
 	
 	window.setInterval(function(){
@@ -22,15 +24,18 @@ $(document).ready(function(){
 			box.position(e.which,map.map);
 			box.moveto();
 		});*/
-	var e = 0;
+	
 	
 	$(".box").hover(function(){
-		if(e == 0){
-			createMachine(numMachine);
-			e++;
+		if(Mac.check == 0){
+			setTimeout(function(){
+				Mac.CreateMac(numMachine);
+    			settime();
+			}, 3000);
+			Mac.check = 1;
 		}
 		$(".map").mousemove(function(e){
-		console.log(e.pageY +  " " + e.pageX);
+			
 		if(e.pageY < maxLengthY && e.pageY > minLengthY){
 			$(".box").css({'top': e.pageY});
 		}
@@ -41,23 +46,8 @@ $(document).ready(function(){
   	});
 	});
 	
-	
 });
 
-
-function createMachine(num){
-	var Mac = new Machine();
-	
-	setTimeout(function(){
-    for(var i = 1 ;i <= num ;i++){
-		Mac.CreateMac(i);
-		move(0,i);
-	}
-    settime();
-	}, 3000);
-
-
-}
 
 function MyObject(x,y,length){
 	this.x = x;
@@ -117,16 +107,23 @@ function MyObject(x,y,length){
 
 
 function Machine(){
+
 	this.CreateMac = function(n){
-		var Class = "Mac" + " " + n;
+
+		for(var i = 1 ;i <= n ; i++){
+			var Class = "Mac" + " " + i;
 		var div = "<div class = '" + Class + "'></div>";
 		$(".map").append(div);
 		var x = Math.floor((Math.random() * (maxLengthX-minLengthX+1))+minLengthX);
 		var y = Math.floor((Math.random() * (maxLengthY-minLengthY+1))+minLengthY);
-		 Class = ".Mac" + "." + n;
+		 Class = ".Mac" + "." + i;
 		 
 		$(Class).css("left",x);
 		$(Class).css("top",y);
+		move(0,i);
+		}
+
+		
 	}
 }
 
@@ -221,8 +218,8 @@ function display(time,seconds){
  		$(".Mac").remove();
  		numMachine++;
  		$(".map").off();
+ 		Mac.check = 0;
  		alert("STAGE " + numMachine);
- 		createMachine(numMachine);
  		return;
  	} 
     
