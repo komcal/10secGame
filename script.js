@@ -1,39 +1,71 @@
 var minLengthX = 309;
 var maxLengthX = 309+500;
-var minLengthY = 21;
-var maxLengthY = 21+500;
+var minLengthY = 21+44.88;
+var maxLengthY = 21+500+44.88;
 var numMachine = 1;
 var time = 10;
 var tt = [0,200,500,800];
 var score = 0;
-
-	var box = new MyObject(x = minLengthX+200,y = minLengthY+200,length = 25);
+var IntervalId;
+var game = 0;
+	var box = new MyObject(x = minLengthX+240,y = minLengthY+240,length = 25);
 	var Mac = new Machine();
 	var map = new MyMap();
 
+function startgame(){
+	game = 1;
+	$(".text").css('font-size','0px');
+	$(".map").css('cursor','none');
+	if(Mac.check == 0){
+		Mac.CreateMac(numMachine);
+    	settime();
+		Mac.check = 1;
+	}
+	$(".map").mousemove(function(e){
+		box.moveto(e.pageX,e.pageY);
+  	});
+}
+function alertbox(word){
+	$(".massbox").remove();
+	var div = '<div class="massbox">' + word + '</div>';
+	$(".textbox").prepend(div);
+	$(".textbox").css('display','block');
+	
+}
+function endgame(){
+	game = 0;
+	window.clearInterval(IntervalId);
+	$(".map").css('cursor','default');
+	$(".box").remove();
+	var scoreText = "Score: " + score;
+	alertbox(scoreText);
+	$(".textbut").on('click',function(){
+	location.reload();	
+	});
+}
+function nextstage(){
+	score+=5;
+ 	numMachine++;
+ 	$(".Mac").remove();
+ 	var next = "Next Level";
+ 	alertbox(next);
+ 	$(".textbut").on('click',function(){
+		reset();
+	});
+}
 $(document).ready(function(){
 	
 	map.CreateMap();
 	Mac.check = 0;
+	document.getElementById("counter").value=time;
 	
-	
-	window.setInterval(function(){
+	IntervalId = window.setInterval(function(){
   		box.checkhit();
 	}, 5);
 	
 	
-	$(".box").hover(function(){
-		$(".text").css('font-size','0px');
-		$(".map").css('cursor','none');
-		if(Mac.check == 0){
-			Mac.CreateMac(numMachine);
-    		settime();
-			Mac.check = 1;
-		}
-		$(".map").mousemove(function(e){
-			box.moveto(e.pageX,e.pageY);
-      
-  	});
+	$(".box").click(function(){
+		startgame();
 	});
 	
 });
@@ -62,10 +94,7 @@ function MyObject(x,y,length){
 	this.checkhit = function(){
 		var hit_list = $(".box").collision(".Mac");
 		if(hit_list.length){
-			$(".box").off();
-			console.log("YOU LOSE!!!");
-			alert(score);
-			location.reload();
+			endgame();			
 		}
 	}
 } 
@@ -180,21 +209,25 @@ function display(time,seconds){
  	
  	document.getElementById("counter").value=seconds;
  	if(seconds==0){
- 		$(".Mac").off();
- 		score+=5;
- 		numMachine++;
- 		alert("STAGE " + numMachine);
- 		reset();
+ 		nextstage();
  		return;
  	} 
+ 	else if(game == 0){
+ 		return;
+ 	}
     score++;
     setTimeout("display("+time+","+seconds+")",1000);
 }
 
 function reset(){
 	$(".Mac").remove();
+	$(".level").remove();
+	var div = "<div class = 'level'>Level "+numMachine+"</div>";
+	$(".head").before(div);
+	$(".textbox").css('display','none');
+	document.getElementById("counter").value=time;
 	$(".map").css('cursor','default');
-	box.moveto(x = minLengthX+200,y = minLengthY+200);
+	box.moveto(x = minLengthX+240,y = minLengthY+240);
  	$(".text").css('font-size','20px');	
  	$(".map").off();
  	Mac.check = 0;

@@ -50,8 +50,8 @@ body{
 .text{
 	font-size: 20px;
 	position: absolute;
-	left: 488px;
-	top: 192px;
+	left: 532px;
+  	top: 278px;
 	color: black;
 }
 #counter{
@@ -61,5 +61,46 @@ body{
 	text-align: center;
 	margin-left: 515px;
 	margin-right: auto;
-	margin-top: 20px;
+	
+}
+#timehead{
+	font-size: 40px;
+	color: white;
+	margin-left: 510px;
+	margin-right: auto;
+	margin-top: 5px;
+}
+.textbox{
+	position: absolute;
+	width: 250px;
+	height: 140px;
+	background-color: #E0EEEE;
+	left: 440px;
+	top: 100px;
+	display: none;
+	border-radius: 10%;
+}
+.massbox{
+	font-size: 25px;
+  	text-align: center;
+  	padding-top: 20px;
+
+}
+.textbut{
+	text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-top: 20px;
+  font-size: 18;
+}
+.head{
+	margin-left: 457px;
+  	margin-right: auto;
+}
+.level{
+  position: absolute;
+  font-size: 20px;
+  left: 750px;
+  top: 40px;
 }
