@@ -1,3 +1,6 @@
+body{
+	background-color: #104E8B;
+}
 .box{
 	width: 25px;
 	height: 25px;
@@ -5,6 +8,7 @@
 	display: inline-block;
 	position: absolute;
 	border-radius: 50%;
+
 }
 .map{
 	width: 525px;
@@ -12,9 +16,11 @@
 	margin-left: 300px;
 	margin-right: auto;
 	margin-top: 20px;
-	border: solid 1px black;
+	border: solid 1px #C6E2FF;
 	display: flex;
-
+	background-color: #C6E2FF;
+	border-radius: 5%;
+	
 }
 .wall{
 	width: 50px;
@@ -40,7 +46,20 @@
     			100% {transform:rotate(360deg);}
 				}
 
-.time{
+
+.text{
+	font-size: 20px;
 	position: absolute;
-	font-size: 150px;
+	left: 488px;
+	top: 192px;
+	color: black;
+}
+#counter{
+	font-size: 50px;
+	display: inline;
+	width: 80px;
+	text-align: center;
+	margin-left: 515px;
+	margin-right: auto;
+	margin-top: 20px;
 }

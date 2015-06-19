@@ -5,6 +5,7 @@ var maxLengthY = 21+500;
 var numMachine = 1;
 var time = 10;
 var tt = [0,200,500,800];
+var score = 0;
 
 	var box = new MyObject(x = minLengthX+200,y = minLengthY+200,length = 25);
 	var Mac = new Machine();
@@ -17,31 +18,20 @@ $(document).ready(function(){
 	
 	
 	window.setInterval(function(){
-  		box.checkhit()
-	}, 1);
-
-	/*$(document).keydown(function(e) {
-			box.position(e.which,map.map);
-			box.moveto();
-		});*/
+  		box.checkhit();
+	}, 5);
 	
 	
 	$(".box").hover(function(){
+		$(".text").css('font-size','0px');
+		$(".map").css('cursor','none');
 		if(Mac.check == 0){
-			setTimeout(function(){
-				Mac.CreateMac(numMachine);
-    			settime();
-			}, 3000);
+			Mac.CreateMac(numMachine);
+    		settime();
 			Mac.check = 1;
 		}
 		$(".map").mousemove(function(e){
-			
-		if(e.pageY < maxLengthY && e.pageY > minLengthY){
-			$(".box").css({'top': e.pageY});
-		}
-		if(e.pageX < maxLengthX && e.pageX > minLengthX){
-			$(".box").css({'left': e.pageX});
-		}
+			box.moveto(e.pageX,e.pageY);
       
   	});
 	});
@@ -58,48 +48,23 @@ function MyObject(x,y,length){
 	$(".box").css("left",x+"px");
 	$(".box").css("top",y+"px");
 	
+	this.moveto = function(x,y){
 
-	this.position = function(keypress,map){
-			var x = (this.x-minLengthX)/this.length;
-			var y = (this.y-minLengthY)/this.length;
-			
-		switch(keypress) {
-        case 37: // left
-        if(this.x > minLengthX){
-        	this.x-=this.length;
-    	}
-        break;
+		if(y < maxLengthY && y > minLengthY){
+ 			$(".box").css({'top': y});
+ 		}
+ 		if(x < maxLengthX && x > minLengthX){
+ 			$(".box").css({'left': x});
+ 		}
 
-        case 38: // up
-        if(this.y > minLengthY){
-        	this.y-=this.length;
-    	}
-        break;
-
-        case 39: // right
-        if(this.x < maxLengthX){
-        	this.x+=this.length;
-    	}
-        break;
-
-        case 40: // down
-        if(this.y < maxLengthY){
-        	this.y+=this.length;
-    	}
-        break;   
-    	}	
-	};
-	this.moveto = function(map){
-		$(".box").animate({top: this.y+"px" , left: this.x+"px"},10,function(){
-			
-		});	
-		
 	}
+
 	this.checkhit = function(){
 		var hit_list = $(".box").collision(".Mac");
-		
 		if(hit_list.length){
-			alert("YOU LOSE!!!");
+			$(".box").off();
+			console.log("YOU LOSE!!!");
+			alert(score);
 			location.reload();
 		}
 	}
@@ -158,7 +123,7 @@ function move(s,num){
 		}
 		var Class = ".Mac" + "." + num;
 		var t = Math.floor((Math.random() * 4));
-		console.log(tt[t]);
+		
 			setTimeout(function(){
 			$(Class).animate({top: y+"px" , left: x+"px"},1000,function(){
 			move(side,num);
@@ -215,13 +180,22 @@ function display(time,seconds){
  	
  	document.getElementById("counter").value=seconds;
  	if(seconds==0){
- 		$(".Mac").remove();
+ 		$(".Mac").off();
+ 		score+=5;
  		numMachine++;
- 		$(".map").off();
- 		Mac.check = 0;
  		alert("STAGE " + numMachine);
+ 		reset();
  		return;
  	} 
-    
+    score++;
     setTimeout("display("+time+","+seconds+")",1000);
+}
+
+function reset(){
+	$(".Mac").remove();
+	$(".map").css('cursor','default');
+	box.moveto(x = minLengthX+200,y = minLengthY+200);
+ 	$(".text").css('font-size','20px');	
+ 	$(".map").off();
+ 	Mac.check = 0;
 }
