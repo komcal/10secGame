@@ -12,6 +12,22 @@ var game = 0;
 	var Mac = new Machine();
 	var map = new MyMap();
 
+
+$(document).ready(function(){
+	
+	map.CreateMap();
+	Mac.check = 0;
+	document.getElementById("counter").value=time;
+	
+	IntervalId = window.setInterval(function(){
+  		box.checkhit();
+	}, 5);
+	
+	$(".box").click(function(){
+		startgame();
+	});
+	
+});
 function startgame(){
 	game = 1;
 	$(".text").css('font-size','0px');
@@ -53,23 +69,6 @@ function nextstage(){
 		reset();
 	});
 }
-$(document).ready(function(){
-	
-	map.CreateMap();
-	Mac.check = 0;
-	document.getElementById("counter").value=time;
-	
-	IntervalId = window.setInterval(function(){
-  		box.checkhit();
-	}, 5);
-	
-	
-	$(".box").click(function(){
-		startgame();
-	});
-	
-});
-
 
 function MyObject(x,y,length){
 	this.x = x;
@@ -204,17 +203,18 @@ function settime(){
 	display(time,seconds);
 }
 function display(time,seconds){
-
+	if(game == 0){
+ 		return;
+ 	}
     seconds-=1;
  	
  	document.getElementById("counter").value=seconds;
+ 	
  	if(seconds==0){
  		nextstage();
  		return;
  	} 
- 	else if(game == 0){
- 		return;
- 	}
+ 	
     score++;
     setTimeout("display("+time+","+seconds+")",1000);
 }
