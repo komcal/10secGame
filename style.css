@@ -10,6 +10,15 @@ body{
 	border-radius: 50%;
 
 }
+.testbox{
+	width: 25px;
+	height: 25px;
+	background-color: blue;
+	display: inline-block;
+	position: absolute;
+	top:0px;
+	left: 0px;
+}
 .map{
 	width: 525px;
 	height: 525px;

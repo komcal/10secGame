@@ -1,5 +1,4 @@
-
-<DOCTYPE! html>
+<!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#">
 	<head>
 		<title>10 Sec Game</title>
@@ -16,8 +15,6 @@
 		<h1 class="head">10 Sec GAME.</h1>
 		<div class = 'level'>Level 1</div>
 		<div class="map">
-			
-			<div class="box"></div>
 			<div class="text">CLICK</div>
 		</div >
 		<div class = "textbox">

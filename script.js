@@ -1,7 +1,7 @@
 var minLengthX = 309;
 var maxLengthX = 309+500;
-var minLengthY = 21+44.88;
-var maxLengthY = 21+500+44.88,
+var minLengthY = 79.88;
+var maxLengthY = 500+79.88,
 	numMachine = 1,
 	time = 10,
 	tt = [0,200,500,800],
@@ -13,6 +13,7 @@ var maxLengthY = 21+500+44.88,
 	
 $(document).ready(function(){
 	document.getElementById("counter").value=time;
+	box.create();
 	$(".box").click(function(){
 		startgame();
 		IntervalId = window.setInterval(function(){
@@ -22,8 +23,7 @@ $(document).ready(function(){
 	
 });
 function startgame(){
-	console.log(game);
-	if(game == 0){
+	if(!game){
 		game = 1;
 		$(".text").css('font-size','0px');
 		$(".map").css('cursor','none');
@@ -72,7 +72,7 @@ function reset(){
 	window.clearInterval(IntervalId);
 	$(".Mac").remove();
 	$(".level").remove();
-	var div = "<div class = 'level'>Level "+numMachine+"</div>";
+	var div = "<div class = 'level'>" + "Level "+numMachine+"</div>";
 	$(".head").before(div);
 	$(".textbox").css('display','none');
 	document.getElementById("counter").value=time;
@@ -86,11 +86,13 @@ function reset(){
 function MyObject(x,y){
 	this.x = x;
 	this.y = y;
-	var div = '<div class="box"></div>';
-	$(".map").append(div);
-	$(".box").css("left",x+"px");
-	$(".box").css("top",y+"px");
 	
+	this.create = function(){
+		var div = '<div class="box"></div>';
+		$(".map").append(div);
+		$(".box").css("left",x+"px");
+		$(".box").css("top",y+"px");
+	}
 	this.moveto = function(x,y){
 		if(y < maxLengthY && y > minLengthY){
  			$(".box").css({'top': y});
@@ -112,7 +114,6 @@ function MyObject(x,y){
 function Machine(){
 
 	this.CreateMac = function(n){
-
 		for(var i = 1 ;i <= n ; i++){
 			var Class = "Mac" + " " + i;
 			var div = "<div class = '" + Class + "'></div>";
@@ -124,10 +125,8 @@ function Machine(){
 				$(Class).css("left",x);
 				$(Class).css("top",y);
 				var hit_list = $(".box").collision(Class);
-			}while(hit_list.length == 1);
-			
+			}while(hit_list.length == 1);	
 		}
-		
 	}
 	this.Macmove = function(n){
 		for(var i = 1 ;i <= n ; i++){
@@ -137,7 +136,6 @@ function Machine(){
 }
 
 function move(s,num){
-		
 	do{
 		var side =	Math.floor((Math.random() * 4)+1);	
 	}while(side == s);
@@ -175,15 +173,13 @@ function move(s,num){
 
 function settime(){
 	var seconds=time+1;
-	document.getElementById("counter").value=time;
 	display(time,seconds);
 }
 function display(time,seconds){
 	if(game == 0){
  		return;
  	}
- 	
-    seconds-=1;
+    seconds--;
  	document.getElementById("counter").value=seconds;
  	if(seconds==0){
  		nextstage();
