@@ -53,8 +53,23 @@ function endgame(){
 	$(".box").remove();
 	var scoreText = "Score: " + score;
 	alertbox(scoreText);
+	var scorebox = '<input type="text" id="scorenum" />'
+	$(".massbox").after(scorebox);
 	$(".textbut").on('click',function(){
-	location.reload();	
+		var player = document.getElementById("scorenum").value;
+		if(player){
+			$.ajax({
+			url: "scoreboard.php",
+			type: "POST",
+			data:{
+				name:player,
+				score:score
+			},
+			success:function(){
+				location.reload();
+			}
+		});
+		}
 	});
 	
 }
