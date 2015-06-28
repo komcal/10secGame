@@ -22,6 +22,7 @@ $(document).ready(function(){
 	});
 	
 });
+
 function startgame(){
 	if(!game){
 		game = 1;
