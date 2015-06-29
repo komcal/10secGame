@@ -23,9 +23,9 @@
 
 		<div id = "timehead">Time</div>
 		<input type="text" size="8" id="counter" />
+		<a href="http://www.komcal.com/game/10secgame/board.php " class='linkscore'>score board</a>
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="jquery-collision.min.js"></script>
-		
 		<script src="script.js"></script>
 
 		
