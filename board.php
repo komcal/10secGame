@@ -24,19 +24,15 @@ class people{
 	$i--;
 	echo("<div class='scorehead'>" . SCORE . "</div>");
 	echo("<table>");	
-	for($i,$j = 1 ; $i >=0 ; $i--,$j++)
-	{
-		if($j < 11)
-		{
-			
-			echo("<tr>");
-			echo("<td class='tdnum'>" . $j ."</td>");
-			echo("<td class='tdname'>" . $p->name[$i] ."</td>");
-			echo("<td class='tdscore'>" . $p->score[$i] ."</td>");
-			echo("</tr>");
-		}
+	for($i,$j = 1 ; $j < 11 ; $i--,$j++)
+	{	
+		echo("<tr>");
+		echo("<td class='tdnum'>" . $j ."</td>");
+		echo("<td class='tdname'>" . $p->name[$i] ."</td>");
+		echo("<td class='tdscore'>" . $p->score[$i] ."</td>");
+		echo("</tr>");
 		
 	}
 	echo("</table>");
-	echo('<a href="http://www.komcal.com/game/10secgame/">back to game</a>');
+	echo('<a href="http://www.komcal.com/project/10secgame/">back to game</a>');
 ?>

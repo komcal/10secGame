@@ -35,7 +35,14 @@ function startgame(){
 		},500);   	
 		$(".map").mousemove(function(e){
 			box.moveto(e.pageX,e.pageY);
-  		});	
+  		});
+  		
+  		$(".map").bind("touchmove",function(e){
+  			e.preventDefault();
+  			var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+  			box.moveto(touch.pageX,touch.pageY);
+  		});
+  		
 	}
   	
 }
